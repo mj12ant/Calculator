@@ -14,11 +14,13 @@ public class Calculator
     private GridBagLayout bagLayout;
     private GridBagConstraints constraints;
 
-    Calculator()
+    boolean dotPressed;
+
+    private Calculator()
     {
         //Buttons
         buttonNames = new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "=",
-                "+", "-", "*", "/"};
+                "+", "-", "*", "/", "C"};
         buttons = new JButton[buttonNames.length];
         for(int i = 0; i < buttons.length; i++){
             buttons[i] = new JButton(buttonNames[i]);
@@ -29,9 +31,11 @@ public class Calculator
         windowContent.setLayout(bagLayout);
         constraints = new GridBagConstraints();
 
-        //Add display field
+        //Add display field + Clear button
         displayField = new JTextField();
-        addComponent(windowContent, displayField, 0, 0, 1, 4);
+        displayField.setEnabled(false);
+        addComponent(windowContent, displayField, 0, 0, 1, 3);
+        addComponent(windowContent, buttons[16], 3, 0, 1, 1);
 
         //Add first buttons row
         addComponent(windowContent, buttons[1], 0, 1, 1, 1);
@@ -57,6 +61,13 @@ public class Calculator
         addComponent(windowContent, buttons[11], 2, 4, 1, 1);
         addComponent(windowContent, buttons[15], 3, 4, 1, 1);
 
+        //Add Action Listeners to buttons
+        CalculatorEngine calc = new CalculatorEngine(this);
+        for (JButton b : buttons) {
+            b.addActionListener(calc);
+        }
+        setDisplayValue("0");
+        dotPressed = false;
         JFrame frame = new JFrame("Calculator");
         frame.setContentPane(windowContent);
         frame.pack();
@@ -78,6 +89,19 @@ public class Calculator
         bagLayout.setConstraints(component, constraints);
         container.add(component);
     }
+
+    void setDisplayValue(String val){
+        displayField.setText(val);
+    }
+
+    String getDisplayValue(){
+        return displayField.getText();
+    }
+
+    String getButtonName(JButton button){
+        return button.getText();
+    }
+
     public static void main(String[] args) {
         new Calculator();
     }
