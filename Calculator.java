@@ -20,7 +20,7 @@ public class Calculator
     {
         //Buttons
         buttonNames = new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "=",
-                "+", "-", "*", "/", "C"};
+                "+", "-", "*", "/", "C", "+/-"};
         buttons = new JButton[buttonNames.length];
         for(int i = 0; i < buttons.length; i++){
             buttons[i] = new JButton(buttonNames[i]);
@@ -31,10 +31,11 @@ public class Calculator
         windowContent.setLayout(bagLayout);
         constraints = new GridBagConstraints();
 
-        //Add display field + Clear button
+        //Add display field + Clear button + Plus/Minus button
         displayField = new JTextField();
         displayField.setEnabled(false);
-        addComponent(windowContent, displayField, 0, 0, 1, 3);
+        addComponent(windowContent, buttons[17], 0, 0, 1, 1);
+        addComponent(windowContent, displayField, 1, 0, 1, 2);
         addComponent(windowContent, buttons[16], 3, 0, 1, 1);
 
         //Add first buttons row

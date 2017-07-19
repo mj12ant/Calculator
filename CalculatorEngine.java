@@ -7,8 +7,7 @@ import java.awt.event.ActionListener;
  */
 public class CalculatorEngine implements ActionListener{
     private Calculator parent;
-    private Double firstNum = null;
-    private Double secondNum = null;
+    private static CalculatorModel calcModel = new CalculatorModel();
 
     CalculatorEngine(Calculator parent){
         this.parent = parent;
@@ -43,16 +42,39 @@ public class CalculatorEngine implements ActionListener{
                         break;
             case "C":   parent.setDisplayValue("0");
                         parent.dotPressed = false;
-                        firstNum = null;
-                        secondNum = null;
+                        calcModel = new CalculatorModel();
                         break;
-            case "+":   firstNum= Double.parseDouble(parent.getDisplayValue());
+            case "+":   calcModel.setFirstNum(displayFieldValue);
+                        calcModel.setAction('+');
                         parent.setDisplayValue("0");
+                        parent.dotPressed = false;
                         break;
-            case "-":
-            case "*":
-            case "/":
-            case "=":
+            case "-":   calcModel.setFirstNum(displayFieldValue);
+                        calcModel.setAction('-');
+                        parent.setDisplayValue("0");
+                        parent.dotPressed = false;
+                        break;
+            case "*":   calcModel.setFirstNum(displayFieldValue);
+                        calcModel.setAction('*');
+                        parent.setDisplayValue("0");
+                        parent.dotPressed = false;
+                        break;
+            case "/":   calcModel.setFirstNum(displayFieldValue);
+                        calcModel.setAction('/');
+                        parent.setDisplayValue("0");
+                        parent.dotPressed = false;
+                        break;
+            case "=":   if(!calcModel.isFirstNumNull()) {
+                            calcModel.setSecondNum(displayFieldValue);
+                            parent.setDisplayValue(Double.toString(calcModel.getResult()));
+                            parent.dotPressed = true;
+                        }
+                        break;
+            case "+/-": if( Double.parseDouble(displayFieldValue) > 0)
+                            parent.setDisplayValue("-" + displayFieldValue);
+                        if( Double.parseDouble(displayFieldValue) < 0)
+                            parent.setDisplayValue(displayFieldValue.substring(1));
+                        break;
         }
     }
 }
